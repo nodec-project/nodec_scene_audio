@@ -1,5 +1,5 @@
-#ifndef NODEC_SERIALIZATION__NODEC_SCENE_AUDIO__COMPONENTS__AUDIO_SOURCE_HPP_
-#define NODEC_SERIALIZATION__NODEC_SCENE_AUDIO__COMPONENTS__AUDIO_SOURCE_HPP_
+#ifndef NODEC_SCENE_AUDIO__SERIALIZATION__COMPONENTS__AUDIO_SOURCE_HPP_
+#define NODEC_SCENE_AUDIO__SERIALIZATION__COMPONENTS__AUDIO_SOURCE_HPP_
 
 #include <nodec_scene_audio/components/audio_source.hpp>
 #include <nodec_scene_audio/resources/audio_clip.hpp>
@@ -20,7 +20,7 @@ public:
           loop(other.loop),
           volume(other.volume),
           position(other.position) {}
-    
+
     operator AudioSource() const noexcept {
         AudioSource value;
 
