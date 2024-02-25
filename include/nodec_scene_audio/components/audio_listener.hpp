@@ -5,10 +5,9 @@ namespace nodec_scene_audio {
 namespace components {
 
 struct AudioListener {
-
 };
 
 } // namespace components
-} // namespace scene_audio
+} // namespace nodec_scene_audio
 
 #endif
