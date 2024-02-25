@@ -8,8 +8,7 @@ namespace nodec_scene_audio {
 namespace components {
 
 // sceneファイルへの書き込みを行う際に必要なクラス
-class SerializableAudioListener : public nodec_scene_serialization::BaseSerializableComponent {
-public:
+struct SerializableAudioListener : nodec_scene_serialization::BaseSerializableComponent {
     SerializableAudioListener()
         : BaseSerializableComponent{this} {}
 

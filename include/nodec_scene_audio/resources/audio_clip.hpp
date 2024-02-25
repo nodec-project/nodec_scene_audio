@@ -7,9 +7,6 @@ namespace resources {
 class AudioClip {
 public:
     virtual ~AudioClip() {}
-
-    // TODO: ステレオ/モノラル設定？に関するパラメータを持たせる
-    int channelCount{2};
 };
 
 } // namespace resources

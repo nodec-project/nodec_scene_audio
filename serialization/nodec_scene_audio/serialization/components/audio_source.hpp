@@ -9,15 +9,14 @@
 namespace nodec_scene_audio {
 namespace components {
 
-class SerializableAudioSource : public nodec_scene_serialization::BaseSerializableComponent {
-public:
+struct SerializableAudioSource : nodec_scene_serialization::BaseSerializableComponent {
     SerializableAudioSource()
         : BaseSerializableComponent{this} {}
 
     SerializableAudioSource(const AudioSource &other)
         : BaseSerializableComponent(this),
           clip(other.clip),
-          is_playing(other.is_playing),
+          is_spatial(other.is_spatial),
           loop(other.loop),
           volume(other.volume),
           position(other.position) {}
@@ -26,7 +25,7 @@ public:
         AudioSource value;
 
         value.clip = clip;
-        value.is_playing = is_playing;
+        value.is_spatial = is_spatial;
         value.loop = loop;
         value.volume = volume;
         value.position = position;
@@ -35,10 +34,10 @@ public:
 
     std::shared_ptr<resources::AudioClip> clip;
 
-    bool is_playing{false};
     bool loop{false};
     float volume{1.0f};
     std::chrono::milliseconds position{0};
+    bool is_spatial{false};
 
     template<class Archive>
     void save(Archive &archive) const {
@@ -46,8 +45,9 @@ public:
         auto &context = cereal::get_user_data<ArchiveContext>(archive);
 
         archive(cereal::make_nvp("clip", context.resource_registry().lookup_name<resources::AudioClip>(clip).first));
-        archive(cereal::make_nvp("is_playing", is_playing));
         archive(cereal::make_nvp("loop", loop));
+        archive(cereal::make_nvp("volume", volume));
+        archive(cereal::make_nvp("is_spatial", is_spatial));
     }
 
     template<class Archive>
@@ -61,8 +61,41 @@ public:
             archive(cereal::make_nvp("clip", name));
             clip = context.resource_registry().get_resource_direct<resources::AudioClip>(name);
         }
-        archive(cereal::make_nvp("is_playing", is_playing));
         archive(cereal::make_nvp("loop", loop));
+        archive(cereal::make_nvp("volume", volume));
+        archive(cereal::make_nvp("is_spatial", is_spatial));
+    }
+};
+
+struct SerializableAudioPlay : nodec_scene_serialization::BaseSerializableComponent {
+    SerializableAudioPlay()
+        : BaseSerializableComponent(this) {
+    }
+    SerializableAudioPlay(const AudioPlay &)
+        : BaseSerializableComponent(this) {
+    }
+    operator AudioPlay() const noexcept {
+        return AudioPlay();
+    }
+
+    template<class Archive>
+    void serialize(Archive &) {
+    }
+};
+
+struct SerializableAudioStop : nodec_scene_serialization::BaseSerializableComponent {
+    SerializableAudioStop()
+        : BaseSerializableComponent(this) {
+    }
+    SerializableAudioStop(const AudioStop &)
+        : BaseSerializableComponent(this) {
+    }
+    operator AudioStop() const noexcept {
+        return AudioStop();
+    }
+
+    template<class Archive>
+    void serialize(Archive &) {
     }
 };
 
@@ -70,5 +103,7 @@ public:
 } // namespace nodec_scene_audio
 
 NODEC_SCENE_REGISTER_SERIALIZABLE_COMPONENT(nodec_scene_audio::components::SerializableAudioSource)
+NODEC_SCENE_REGISTER_SERIALIZABLE_COMPONENT(nodec_scene_audio::components::SerializableAudioPlay)
+NODEC_SCENE_REGISTER_SERIALIZABLE_COMPONENT(nodec_scene_audio::components::SerializableAudioStop)
 
 #endif
