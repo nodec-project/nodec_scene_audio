@@ -3,6 +3,7 @@
 
 #include <chrono>
 #include <memory>
+#include <optional>
 
 #include "../resources/audio_clip.hpp"
 
@@ -24,7 +25,10 @@ struct AudioSource {
     bool is_spatial{false};
 };
 
-struct AudioPlay {};
+struct AudioPlay {
+    std::optional<std::chrono::milliseconds> position;
+};
+
 struct AudioStop {};
 
 } // namespace components
